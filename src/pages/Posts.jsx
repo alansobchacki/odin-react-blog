@@ -1,22 +1,36 @@
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from '../hooks/Auth.jsx';
 
 const Posts = () => {
-  useEffect(() => {
-    const currentUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token")
-    const userData = JSON.parse(currentUser);
-
-    console.log("current user:" + currentUser);
-    console.log("does it have a token?" + token);
-    console.log("is admin?" + userData.admin);
-  }, []);
+  const { loggedIn, isAdmin, hasToken, userName } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
-      <p>
-        whoa mama
-        check your CONSOLE;
-      </p>
+      {loggedIn && hasToken && isAdmin && (
+        <>
+          <p>Hello, {userName}. You can post stuff now!</p>
+        </>
+
+      )}
+      {!loggedIn &&(
+        <>
+          <p>You are not logged in.</p>
+          <button onClick={() => navigate("/")}>Return</button>
+        </>
+      )}
+      {loggedIn && !isAdmin &&(
+        <>
+          <p>Only admins are allowed to create posts.</p>
+          <button onClick={() => navigate("/")}>Return</button>
+        </>
+      )}
+      {loggedIn && isAdmin && !hasToken && (
+        <>
+          <p>Your credentials have expired. Please log in again to write and publish posts.</p>
+          <button onClick={() => navigate("/")}>Return</button>
+        </>
+      )}
     </>
   );
 };
