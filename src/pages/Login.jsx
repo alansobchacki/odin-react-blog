@@ -6,15 +6,13 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
-      setLoggedIn(true);
-    }
+    if (token) setLoggedIn(true);
   }, []);
 
   const handleLogIn = function (data) {
@@ -22,8 +20,8 @@ const LoginForm = () => {
       setIsAdmin(true);
     }
 
+    localStorage.setItem("user", JSON.stringify(data.user));
     setLoggedIn(true);
-    console.log(data);
   };
 
   const handleSubmit = async (e) => {
@@ -57,6 +55,7 @@ const LoginForm = () => {
       {loggedIn ? (
         <>
           <p>Welcome</p>
+          <button>Click here to logout</button>
           {isAdmin && (
             <>
               <button onClick={() => navigate("/posts")}>
