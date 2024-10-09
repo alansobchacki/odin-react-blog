@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -10,18 +10,19 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const currentUser = localStorage.getItem("user");
 
-    if (token) setLoggedIn(true);
+    if (currentUser) {
+      const userData = JSON.parse(currentUser);
+      setLoggedIn(true);
+      if (userData.admin) setIsAdmin(true);
+    }
   }, []);
 
   const handleLogIn = function (data) {
-    if (data.user.admin) {
-      setIsAdmin(true);
-    }
-
-    localStorage.setItem("user", JSON.stringify(data.user));
     setLoggedIn(true);
+
+    if (data.user.admin) setIsAdmin(true);
   };
 
   const handleSubmit = async (e) => {
@@ -39,6 +40,7 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
         alert("Login successful!");
         handleLogIn(data);
@@ -54,7 +56,7 @@ const LoginForm = () => {
     <>
       {loggedIn ? (
         <>
-          <p>Welcome</p>
+          <p>Welcome.</p>
           <button>Click here to logout</button>
           {isAdmin && (
             <>

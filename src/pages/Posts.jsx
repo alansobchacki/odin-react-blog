@@ -11,7 +11,6 @@ const Posts = () => {
         <>
           <p>Hello, {userName}. You can post stuff now!</p>
         </>
-
       )}
       {!loggedIn &&(
         <>
