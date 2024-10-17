@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { MainContainer } from "./Index.styles.js";
 import LoginPage from "./Login.jsx";
 import SignupPage from "./Signup.jsx";
 
@@ -32,7 +33,7 @@ const MainPage = () => {
   }, []);
 
   return (
-    <>
+    <MainContainer>
       <LoginPage />
       <SignupPage />
       <h1>Posts</h1>
@@ -46,7 +47,7 @@ const MainPage = () => {
       ) : (
         <p>No posts available.</p>
       )}
-    </>
+    </MainContainer>
   );
 };
 
