@@ -1,29 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/Auth.jsx";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { loggedIn, userName, isAdmin } = useAuth();
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const currentUser = localStorage.getItem("user");
-
-    if (currentUser) {
-      const userData = JSON.parse(currentUser);
-      setLoggedIn(true);
-      if (userData.admin) setIsAdmin(true);
-    }
-  }, []);
-
-  const handleLogIn = function (data) {
-    setLoggedIn(true);
-
-    if (data.user.admin) setIsAdmin(true);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +27,6 @@ const LoginForm = () => {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
         alert("Login successful!");
-        handleLogIn(data);
       } else {
         alert(data.message || "Login failed");
       }
@@ -56,7 +39,7 @@ const LoginForm = () => {
     <>
       {loggedIn ? (
         <>
-          <p>Welcome.</p>
+          <p>Welcome, {userName}.</p>
           <button>Click here to logout</button>
           {isAdmin && (
             <>

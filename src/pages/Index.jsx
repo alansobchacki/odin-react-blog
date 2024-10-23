@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
-import { MainContainer } from "./Index.styles.js";
+import {
+  MainContainer,
+  LeftContainer,
+  RightContainer,
+  BlogLatestPosts,
+  BlogPostContainer,
+  BlogPostTitle,
+  BlogPostMessage,
+} from "./Index.styles.js";
 import LoginPage from "./Login.jsx";
 import SignupPage from "./Signup.jsx";
+import useAuth from "../hooks/Auth.jsx";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const MainPage = () => {
   const [posts, setPosts] = useState([]);
+  const { loggedIn } = useAuth();
 
   const getPosts = async () => {
     try {
@@ -34,19 +44,23 @@ const MainPage = () => {
 
   return (
     <MainContainer>
-      <LoginPage />
-      <SignupPage />
-      <h1>Posts</h1>
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <div key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-          </div>
-        ))
-      ) : (
-        <p>No posts available.</p>
-      )}
+      <LeftContainer>
+        <BlogLatestPosts>Latest Posts:</BlogLatestPosts>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <BlogPostContainer key={post.id}>
+              <BlogPostTitle>{post.title}</BlogPostTitle>
+              <BlogPostMessage>{post.content}</BlogPostMessage>
+            </BlogPostContainer>
+          ))
+        ) : (
+          <p>No posts available.</p>
+        )}
+      </LeftContainer>
+      <RightContainer>
+        <LoginPage />
+        {!loggedIn && <SignupPage />}
+      </RightContainer>
     </MainContainer>
   );
 };
