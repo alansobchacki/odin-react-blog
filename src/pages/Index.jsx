@@ -8,15 +8,12 @@ import {
   BlogPostTitle,
   BlogPostMessage,
 } from "./Index.styles.js";
-import LoginPage from "./Login.jsx";
-import SignupPage from "./Signup.jsx";
-import useAuth from "../hooks/Auth.jsx";
+import LoginPage from "./AuthForm.jsx";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const MainPage = () => {
   const [posts, setPosts] = useState([]);
-  const { loggedIn } = useAuth();
 
   const getPosts = async () => {
     try {
@@ -59,7 +56,6 @@ const MainPage = () => {
       </LeftContainer>
       <RightContainer>
         <LoginPage />
-        {!loggedIn && <SignupPage />}
       </RightContainer>
     </MainContainer>
   );
