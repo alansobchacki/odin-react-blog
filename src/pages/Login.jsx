@@ -5,11 +5,11 @@ import useAuth from "../hooks/Auth.jsx";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loggedIn, userName, isAdmin } = useAuth();
+  const { loggedIn, userName, isAdmin, login, logout } = useAuth();
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
@@ -24,8 +24,7 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token);
+        login(data.user, data.token);
         alert("Login successful!");
       } else {
         alert(data.message || "Login failed");
@@ -35,12 +34,17 @@ const LoginForm = () => {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <>
       {loggedIn ? (
         <>
           <p>Welcome, {userName}.</p>
-          <button>Click here to logout</button>
+          <button onClick={handleLogout}>Click here to logout</button>
           {isAdmin && (
             <>
               <button onClick={() => navigate("/posts")}>
@@ -50,7 +54,7 @@ const LoginForm = () => {
           )}
         </>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
           <input
             type="text"
             value={username}
