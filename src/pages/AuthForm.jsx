@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  MainContainer,
+  FormTitle,
+  InputField,
+  FormButton,
+} from "./AuthForm.styles.js";
 import useAuth from "../hooks/Auth.jsx";
 
 const LoginForm = () => {
@@ -71,7 +77,7 @@ const LoginForm = () => {
   };
 
   return (
-    <>
+    <MainContainer>
       {loggedIn ? (
         <>
           <p>Welcome, {userName}.</p>
@@ -83,52 +89,52 @@ const LoginForm = () => {
       ) : (
         <>
           <form onSubmit={handleLogin}>
-            <h2>Login</h2>
-            <input
+            <FormTitle>Login</FormTitle>
+            <InputField
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
               required
             />
-            <input
+            <InputField
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
             />
-            <button type="submit">Login</button>
+            <FormButton type="submit">Login</FormButton>
           </form>
 
           <form onSubmit={handleSignup}>
-            <h2>Sign Up</h2>
-            <input
+            <FormTitle>Don&apos;t have an account? Create one</FormTitle>
+            <InputField
               type="text"
               value={signupName}
               onChange={(e) => setSignupName(e.target.value)}
               placeholder="Name"
               required
             />
-            <input
+            <InputField
               type="email"
               value={signupEmail}
               onChange={(e) => setSignupEmail(e.target.value)}
               placeholder="Email"
               required
             />
-            <input
+            <InputField
               type="password"
               value={signupPassword}
               onChange={(e) => setSignupPassword(e.target.value)}
               placeholder="Password"
               required
             />
-            <button type="submit">Sign Up</button>
+            <FormButton type="submit">Sign Up</FormButton>
           </form>
         </>
       )}
-    </>
+    </MainContainer>
   );
 };
 

@@ -13,14 +13,14 @@ export const MainContainer = styled.div`
 export const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 500px;
+  min-width: 500px;
 `;
 
 export const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 15px;
+  gap: 30px;
 `;
 
 export const BlogLatestPosts = styled.h1`
@@ -34,6 +34,7 @@ export const BlogPostContainer = styled.div`
 
 export const BlogPostTitle = styled.h2`
   font-size: 2.25rem;
+  margin-bottom: 15px;
 `;
 
 export const BlogPostMessage = styled.p`
