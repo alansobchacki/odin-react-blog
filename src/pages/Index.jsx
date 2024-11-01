@@ -16,6 +16,7 @@ const MainPage = () => {
   const [posts, setPosts] = useState([]);
   const [content, setContent] = useState("");
   const [commentAuthorId, setCommentAuthorId] = useState(0);
+  const [commentAuthorName, setCommentAuthorName] = useState("");
   const currentUser = localStorage.getItem("user");
   const token = localStorage.getItem("token");
 
@@ -40,7 +41,7 @@ const MainPage = () => {
     }
   };
 
-  const writeNewComment = async (postId, author_id) => {
+  const writeNewComment = async (postId, author_id, author_name) => {
     try {
       console.log(`Trying to write a comment on post ${postId} from author ${author_id}`)
 
@@ -50,7 +51,7 @@ const MainPage = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ author_id, content }),
+        body: JSON.stringify({ author_id, author_name, content }),
       });
 
       const data = await response.json();
@@ -74,7 +75,9 @@ const MainPage = () => {
     if (currentUser) {
       const userData = JSON.parse(currentUser);
       const authorId = userData.id;
+      const authorName = userData.name;
       setCommentAuthorId(authorId);
+      setCommentAuthorName(authorName);
     }
   }, [currentUser]);
 
@@ -91,7 +94,7 @@ const MainPage = () => {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    writeNewComment(post.id, commentAuthorId);
+                    writeNewComment(post.id, commentAuthorId, commentAuthorName);
                     console.log(post);
                   }}
                 >
@@ -111,6 +114,7 @@ const MainPage = () => {
                     <h4>Comments:</h4>
                     {post.comments.map((comment) => (
                       <div key={comment.id}>
+                        <p>{comment.author_name}</p>
                         <p>{comment.content}</p>
                       </div>
                     ))}
