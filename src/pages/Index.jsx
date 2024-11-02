@@ -9,6 +9,7 @@ import {
   BlogPostMessage,
 } from "./Index.styles.js";
 import LoginPage from "./AuthForm.jsx";
+import useAuth from '../hooks/Auth.jsx';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -19,6 +20,7 @@ const MainPage = () => {
   const [commentAuthorName, setCommentAuthorName] = useState("");
   const currentUser = localStorage.getItem("user");
   const token = localStorage.getItem("token");
+  const { isAdmin } = useAuth();
 
   const getAllPosts = async () => {
     try {
@@ -43,8 +45,6 @@ const MainPage = () => {
 
   const writeNewComment = async (postId, author_id, author_name) => {
     try {
-      console.log(`Trying to write a comment on post ${postId} from author ${author_id}`)
-
       const response = await fetch(`${apiUrl}/comments/${postId}`, {
         method: "POST",
         headers: {
@@ -62,20 +62,46 @@ const MainPage = () => {
       } else if (response.status === 401) { 
         alert("You are not authorized to write comments.");
       } else {
-        alert(`Failed to create comment: ${data.message}`);
+        alert(`Failed to create comment: ${data.message}`); 
       }
     } catch (error) {
       alert("Error: " + error.message);
     }
   };
 
+  const deleteComment = async (comment_id) => {
+    try {
+      if (isAdmin) {
+        const response = await fetch(`${apiUrl}/comments/${comment_id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify({ comment_id }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Comment deleted successfully!");
+        } else if (response.status === 401) { 
+          alert("You are not authorized to delete comments.");
+        } else {
+          alert(`Failed to delete comment: ${data.message}`); 
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getAllPosts();
 
     if (currentUser) {
-      const userData = JSON.parse(currentUser);
-      const authorId = userData.id;
-      const authorName = userData.name;
+      const { id: authorId, name: authorName } = JSON.parse(currentUser);
+
       setCommentAuthorId(authorId);
       setCommentAuthorName(authorName);
     }
@@ -90,7 +116,6 @@ const MainPage = () => {
             <BlogPostContainer key={post.id}>
               <BlogPostTitle>{post.title}</BlogPostTitle>
               <BlogPostMessage>{post.content}</BlogPostMessage>
-              <button>Comment</button>
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -98,7 +123,6 @@ const MainPage = () => {
                     console.log(post);
                   }}
                 >
-                  <title>Login</title>
                   <input
                     type="text"
                     value={content}
@@ -114,8 +138,15 @@ const MainPage = () => {
                     <h4>Comments:</h4>
                     {post.comments.map((comment) => (
                       <div key={comment.id}>
+                        {isAdmin && (
+                          <button onClick={() => deleteComment(comment.id)}>-X- </button>
+                        )}
                         <p>{comment.author_name}</p>
-                        <p>{comment.content}</p>
+                        {comment.deleted ? (
+                          <p>Commend deleted</p>
+                        ) : (
+                          <p>{comment.content}</p>
+                        )}
                       </div>
                     ))}
                   </div>
