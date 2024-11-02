@@ -7,6 +7,10 @@ import {
   BlogPostContainer,
   BlogPostTitle,
   BlogPostMessage,
+  FormContainer,
+  CommentInput,
+  SubmitButton,
+  Comment
 } from "./Index.styles.js";
 import LoginPage from "./AuthForm.jsx";
 import useAuth from '../hooks/Auth.jsx';
@@ -20,7 +24,7 @@ const MainPage = () => {
   const [commentAuthorName, setCommentAuthorName] = useState("");
   const currentUser = localStorage.getItem("user");
   const token = localStorage.getItem("token");
-  const { isAdmin } = useAuth();
+  const { loggedIn, isAdmin } = useAuth();
 
   const getAllPosts = async () => {
     try {
@@ -111,51 +115,53 @@ const MainPage = () => {
     <MainContainer>
       <LeftContainer>
         <BlogLatestPosts>Latest Posts:</BlogLatestPosts>
-        {posts.length > 0 ? (
+        {posts.length > 0 && (
           posts.map((post) => (
             <BlogPostContainer key={post.id}>
               <BlogPostTitle>{post.title}</BlogPostTitle>
               <BlogPostMessage>{post.content}</BlogPostMessage>
-                <form
+                <>
+                  {post.comments && post.comments.length > 0 && (
+                    <div>
+                      <h4>Comments:</h4>
+                      {post.comments.map((comment) => (
+                        <div key={comment.id}>
+                          {isAdmin && (
+                            <button onClick={() => deleteComment(comment.id)}>-X- </button>
+                          )}
+                          <p>By {comment.author_name}:</p>
+                          {comment.deleted ? (
+                            <Comment isDeleted>Commend deleted by an Admin</Comment>
+                          ) : (
+                            <Comment>{comment.content}</Comment>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+                {loggedIn && (
+                  <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     writeNewComment(post.id, commentAuthorId, commentAuthorName);
                     console.log(post);
                   }}
                 >
-                  <input
+                <FormContainer>
+                  <CommentInput
                     type="text"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Write your comment here."
                     required
                   />
-                  <button type="submit">Submit Comment</button>
+                  <SubmitButton type="submit">Submit Comment</SubmitButton>
+                </FormContainer>
                 </form>
-              <>
-                {post.comments && post.comments.length > 0 && (
-                  <div>
-                    <h4>Comments:</h4>
-                    {post.comments.map((comment) => (
-                      <div key={comment.id}>
-                        {isAdmin && (
-                          <button onClick={() => deleteComment(comment.id)}>-X- </button>
-                        )}
-                        <p>{comment.author_name}</p>
-                        {comment.deleted ? (
-                          <p>Commend deleted</p>
-                        ) : (
-                          <p>{comment.content}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
                 )}
-              </>
             </BlogPostContainer>
           ))
-        ) : (
-          <p>No posts available.</p>
         )}
       </LeftContainer>
       <RightContainer>

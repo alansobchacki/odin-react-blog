@@ -132,6 +132,16 @@ const LoginForm = () => {
             />
             <FormButton type="submit">Sign Up</FormButton>
           </form>
+
+          <ul>
+            <ul><strong>User privileges:</strong></ul>
+              <li>Users can write comments.</li>
+            <li><strong>Admin privileges:</strong></li>
+            <ul>
+              <li>Admins can write and delete posts.</li>
+              <li>Admins can write and delete comments.</li>
+            </ul>
+          </ul>
         </>
       )}
     </MainContainer>
