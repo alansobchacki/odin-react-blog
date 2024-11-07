@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   MainContainer,
+  LoggedContainer,
+  Welcome,
   FormTitle,
   InputField,
   FormButton,
@@ -79,13 +81,13 @@ const LoginForm = () => {
   return (
     <MainContainer>
       {loggedIn ? (
-        <>
-          <p>Welcome, {userName}.</p>
-          <FormButton onClick={handleLogout}>Logout</FormButton>
+        <LoggedContainer>
+          <Welcome>Welcome, {userName}.</Welcome>
           {isAdmin && (
             <FormButton onClick={() => navigate("/posts")}>Write a new post</FormButton>
           )}
-        </>
+          <FormButton onClick={handleLogout}>Logout</FormButton>
+        </LoggedContainer>
       ) : (
         <>
           <form onSubmit={handleLogin}>

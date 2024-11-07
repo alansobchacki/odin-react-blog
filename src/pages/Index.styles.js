@@ -13,7 +13,7 @@ export const MainContainer = styled.div`
 export const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  width: 450px;
 `;
 
 export const LeftContainer = styled.div`

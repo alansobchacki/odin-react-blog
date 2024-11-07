@@ -3,7 +3,18 @@ import styled from "styled-components";
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 30px;
+`;
+
+export const LoggedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const Welcome = styled.p`
+  font-family: Public Sans;
+  font-size: 1.25rem;
 `;
 
 export const FormTitle = styled.h2`

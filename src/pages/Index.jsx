@@ -124,29 +124,27 @@ const MainPage = () => {
               <BlogPostMessage>{post.content}</BlogPostMessage>
                 <>
                   {post.comments && (
-                    <div>
+                    <>
                       <CommentsTitle>Comments:</CommentsTitle>
                       {post.comments.length < 1 && (
-                        <>
-                          No comments yet. Be the first to comment!
-                        </>
+                        <>No comments yet. Be the first to comment!</>
                       )}
                       {post.comments.map((comment) => (
                         <CommentContainer key={comment.id}>
-                          {isAdmin && (
-                            <DeleteButton onClick={() => deleteComment(comment.id)}>
-                              Delete Comment 
-                            </DeleteButton>
-                          )}
                           <p>By {comment.author_name}:</p>
                           {comment.deleted ? (
                             <Comment isDeleted>Comment deleted by an Admin</Comment>
                           ) : (
                             <Comment>{comment.content}</Comment>
                           )}
+                          {!comment.deleted && isAdmin && (
+                            <DeleteButton onClick={() => deleteComment(comment.id)}>
+                              Delete Comment 
+                            </DeleteButton>
+                          )}
                         </CommentContainer>
                       ))}
-                    </div>
+                    </>
                   )}
                 </>
                 {loggedIn && (
