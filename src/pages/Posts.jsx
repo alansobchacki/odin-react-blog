@@ -5,10 +5,10 @@ import useAuth from '../hooks/Auth.jsx';
 const Posts = () => {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
-  const { loggedIn, isAdmin, hasToken, userName } = useAuth();
+  const { loggedIn, isAdmin, hasToken, userName, userId } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [published, setPublished] = useState(true); // temporary, tweak this logic later
+  const [published, setPublished] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ const Posts = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ title, content, published }),
+        body: JSON.stringify({ userId, title, content, published }),
       });
   
       const data = await response.json();

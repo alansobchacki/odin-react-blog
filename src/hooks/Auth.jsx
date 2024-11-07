@@ -5,6 +5,7 @@ const useAuth = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [hasToken, setHasToken] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState(0);
 
   useEffect(() => {
     const currentUser = localStorage.getItem("user");
@@ -15,6 +16,7 @@ const useAuth = () => {
       setLoggedIn(true);
       setHasToken(true);
       setUserName(userData.name);
+      setUserId(userData.id);
       if (userData.admin) {
         setIsAdmin(true);
       }
@@ -44,6 +46,7 @@ const useAuth = () => {
     isAdmin,
     hasToken,
     userName,
+    userId,
     login,
     logout,
   };

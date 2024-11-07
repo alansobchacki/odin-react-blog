@@ -22,9 +22,9 @@ const MainPage = () => {
   const [content, setContent] = useState("");
   const [commentAuthorId, setCommentAuthorId] = useState(0);
   const [commentAuthorName, setCommentAuthorName] = useState("");
+  const { loggedIn, isAdmin } = useAuth();
   const currentUser = localStorage.getItem("user");
   const token = localStorage.getItem("token");
-  const { loggedIn, isAdmin } = useAuth();
 
   const getAllPosts = async () => {
     try {
@@ -37,7 +37,6 @@ const MainPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setPosts(data);
       } else {
         console.error("Failed to fetch posts");
@@ -145,7 +144,6 @@ const MainPage = () => {
                   onSubmit={(e) => {
                     e.preventDefault();
                     writeNewComment(post.id, commentAuthorId, commentAuthorName);
-                    console.log(post);
                   }}
                 >
                 <FormContainer>
