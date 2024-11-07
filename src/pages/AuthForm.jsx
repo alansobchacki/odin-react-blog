@@ -81,9 +81,9 @@ const LoginForm = () => {
       {loggedIn ? (
         <>
           <p>Welcome, {userName}.</p>
-          <button onClick={handleLogout}>Click here to logout</button>
+          <FormButton onClick={handleLogout}>Logout</FormButton>
           {isAdmin && (
-            <button onClick={() => navigate("/posts")}>Write a new post</button>
+            <FormButton onClick={() => navigate("/posts")}>Write a new post</FormButton>
           )}
         </>
       ) : (

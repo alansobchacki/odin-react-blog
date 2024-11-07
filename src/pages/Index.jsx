@@ -10,7 +10,10 @@ import {
   FormContainer,
   CommentInput,
   SubmitButton,
-  Comment
+  DeleteButton,
+  CommentsTitle,
+  Comment,
+  CommentContainer
 } from "./Index.styles.js";
 import LoginPage from "./AuthForm.jsx";
 import useAuth from '../hooks/Auth.jsx';
@@ -120,21 +123,28 @@ const MainPage = () => {
               <BlogPostTitle>{post.title}</BlogPostTitle>
               <BlogPostMessage>{post.content}</BlogPostMessage>
                 <>
-                  {post.comments && post.comments.length > 0 && (
+                  {post.comments && (
                     <div>
-                      <h4>Comments:</h4>
+                      <CommentsTitle>Comments:</CommentsTitle>
+                      {post.comments.length < 1 && (
+                        <>
+                          No comments yet. Be the first to comment!
+                        </>
+                      )}
                       {post.comments.map((comment) => (
-                        <div key={comment.id}>
+                        <CommentContainer key={comment.id}>
                           {isAdmin && (
-                            <button onClick={() => deleteComment(comment.id)}>-X- </button>
+                            <DeleteButton onClick={() => deleteComment(comment.id)}>
+                              Delete Comment 
+                            </DeleteButton>
                           )}
                           <p>By {comment.author_name}:</p>
                           {comment.deleted ? (
-                            <Comment isDeleted>Commend deleted by an Admin</Comment>
+                            <Comment isDeleted>Comment deleted by an Admin</Comment>
                           ) : (
                             <Comment>{comment.content}</Comment>
                           )}
-                        </div>
+                        </CommentContainer>
                       ))}
                     </div>
                   )}

@@ -6,14 +6,14 @@ export const MainContainer = styled.div`
   color: white;
   background-color: #282c34;
   padding: 20px;
-  height: 100vh;
   width: 100%;
+  gap: 50px;
 `;
 
 export const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 500px;
+  max-width: 400px;
 `;
 
 export const LeftContainer = styled.div`
@@ -30,6 +30,8 @@ export const BlogLatestPosts = styled.h1`
 export const BlogPostContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 30px;
+  border-bottom: 1px solid lightgray;
 `;
 
 export const BlogPostTitle = styled.h2`
@@ -40,6 +42,8 @@ export const BlogPostTitle = styled.h2`
 export const BlogPostMessage = styled.p`
   font-size: 1.25rem;
   font-weight: 300;
+  padding: 5px;
+  margin-bottom: 25px;
 `;
 
 export const FormContainer = styled.div`
@@ -47,6 +51,12 @@ export const FormContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin-top: 10px;
+`;
+
+export const CommentsTitle = styled.h4`
+  font-family: Public Sans;
+  font-size: 1.45rem;
+  margin-bottom: 10px;
 `;
 
 export const CommentInput = styled.input`
@@ -93,6 +103,16 @@ export const SubmitButton = styled.button`
   }
 `;
 
+export const CommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 5px;
+  max-width: 400px;
+`;
+
 export const DeleteButton = styled.button`
   font-family: "Public Sans";
   font-weight: 600;
@@ -100,6 +120,7 @@ export const DeleteButton = styled.button`
   border-radius: 6px;
   background-color: white;
   padding: 5px;
+  width: 100px;
 
   &:hover {
     cursor: pointer;
@@ -110,7 +131,6 @@ export const DeleteButton = styled.button`
 export const Comment = styled.p`
   margin-top: 5px;
   margin-bottom: 5px;
-  margin-left: 10px;
   font-style: ${(props) => (props.isDeleted ? 'italic' : 'normal')};
   font-weight: ${(props) => (props.isDeleted ? '300' : '600')};
   color: ${(props) => (props.isDeleted ? 'lightgray' : 'white')};
