@@ -1,4 +1,5 @@
-## Project: Blog API
+Project: Blog API
+=============
 
 A basic blog that connects to an API.
 
